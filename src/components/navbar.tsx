@@ -17,23 +17,20 @@ export const NavBar = () => (
         <i className="fa fa-2x fa-bars"></i>
       </a>
     </div>
+
+    
   
     {/* Global navigation */}
     <nav className="hidden md:block">
       <ul className="list-reset md:flex md:items-center">
         <li className="md:ml-4">
-          <a className="block no-underline hover:underline py-2 text-grey-darkest hover:text-black md:border-none md:p-0" href="#">
-            Products
+          <a className="no-underline text-teal-dark border-b-4 border-teal-dark uppercase tracking-wide font-bold text-sm py-1 mr-8" href="#">
+            Index
           </a>
         </li>
         <li className="md:ml-4">
-          <a className="border-t block no-underline hover:underline py-2 text-grey-darkest hover:text-black md:border-none md:p-0" href="#">
-            About
-          </a>
-        </li>
-        <li className="md:ml-4">
-          <a className="border-t block no-underline hover:underline py-2 text-grey-darkest hover:text-black md:border-none md:p-0" href="#">
-            Contact
+          <a className="no-underline text-teal-dark border-teal-dark uppercase tracking-wide font-bold text-sm py-1 mr-8" href="#">
+            Habits
           </a>
         </li>
       </ul>
