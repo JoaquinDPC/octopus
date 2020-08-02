@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import { Mission } from './components/mision';
 import { Add } from './components/add';
 import { IMision } from './interfaces';
+import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
+
 
 const mock: IMision[] = [{
   id: 1,
@@ -38,7 +40,7 @@ const mock: IMision[] = [{
 }];
 
 export const Home = () => {
-  const [missions, setTask] = useState<IMision[]>(mock);
+  const [missions, setMission] = useState<IMision[]>(mock);
 
   const addMission = (mission: string): void => {
     const copyMissions = missions;
@@ -48,7 +50,7 @@ export const Home = () => {
       name: mission
     });
 
-    setTask([ ... copyMissions]);
+    setMission([ ... copyMissions]);
   };
 
   const deleteMission = (id: number) => {
@@ -56,7 +58,7 @@ export const Home = () => {
     const missionIndex = missions.findIndex((mission: IMision) => mission.id === id);
     copyMissions.splice(missionIndex, 1);
 
-    setTask([ ... copyMissions]);
+    setMission([ ... copyMissions]);
   };
 
   const editMission = (id: number, name: string) => {
@@ -64,25 +66,85 @@ export const Home = () => {
     const missionIndex = missions.findIndex((mission: IMision) => mission.id === id);
     copyMissions[missionIndex].name = name;
 
-    setTask([ ... copyMissions]);
+    setMission([ ... copyMissions]);
   };
+
+  const reorder = (list, startIndex, endIndex): IMision[] => {
+    // const result = Array.from(list);
+    const [removed] = list.splice(startIndex, 1);
+    list.splice(endIndex, 0, removed);
+  
+    return list;
+  };
+
+  const onDragEnd = (result) => {
+    // dropped outside the list
+    if (!result.destination) {
+      return;
+    }
+
+    // console.log(result.source.index);
+    // console.log(result.destination.index);
+
+    const items = reorder(
+      missions,
+      result.source.index,
+      result.destination.index
+    );
+
+    setMission(items);
+  };
+
+  const grid = 8;
+
+  const getListStyle = isDraggingOver => ({
+    background: isDraggingOver ? "" : "",
+    padding: grid,
+    width: 250
+  });
+
+  const getItemStyle = (isDragging, draggableStyle) => ({
+    // some basic styles to make the items look a bit nicer
+    userSelect: "none",
+    padding: grid * 2,
+    margin: `0 0 ${grid}px 0`,
+  
+    // change background colour if dragging
+    background: isDragging ? "" : "",
+  
+    // styles we need to apply on draggables
+    ...draggableStyle
+  });
  
   return (
     <div className="flex flex-col">
       <Add addMission={addMission} />
 
-      <div className="bg-indigo-200 relative bot-0">
-        {
-          missions.map((mission, index) => (
-            <Mission 
-              key={mission.id} 
-              mission={mission} 
-              deleteMission={deleteMission}
-              editMission={editMission}
-              />
-          ))
-        }
-      </div>
+      <DragDropContext onDragEnd={onDragEnd}>
+        <Droppable droppableId="droppable">
+        {(provided, snapshot) => (
+          <div  
+            {...provided.droppableProps}
+            ref={provided.innerRef} 
+            className="relative bot-0">
+          {
+            missions.map((mission, index) => (
+
+
+                  <Mission 
+                    bla={index}
+                    key={mission.id} 
+                    mission={mission} 
+                    deleteMission={deleteMission}
+                    editMission={editMission}
+                    />
+
+            ))
+          }
+          </div>
+        )}
+        </Droppable>
+      </DragDropContext>
   
     </div>
   );

@@ -11,6 +11,7 @@
     "@types/react": "^16.9.0",
     "@types/react-dom": "^16.9.0",
     "react": "^16.13.1",
+    "react-beautiful-dnd": "^13.0.0",
     "react-dom": "^16.13.1",
     "react-icons": "^3.10.0",
     "react-scripts": "3.4.1",
@@ -18,6 +19,7 @@
   },
   "scripts": {
     "start": "npm run tailwind:css && react-scripts start",
+    "push": "git push https://JoaquinDPC:9d198619@github.com/JoaquinDPC/octopus.git",
     "tailwind:css": "tailwind build src/tailwind.css -c tailwind.config.js -o src/index.css",
     "build": "npm run tailwind:css && react-scripts build",
     "test": "react-scripts test",

@@ -1,53 +1,49 @@
-import React, { useState, useRef, useEffect, useCallback } from 'react';
+import React, { useState, useRef, useEffect, createRef } from 'react';
 import { FaCheck, FaTimes } from 'react-icons/fa';
 import { AiFillEdit, AiOutlineDelete } from "react-icons/ai";
 import { GrDrag } from "react-icons/gr";
 import { keyboardEvent, inputEvent, IMision } from '../interfaces';
+import { Draggable } from "react-beautiful-dnd";
 
 interface IMisionProps {
+  bla: number
   mission: IMision
   deleteMission: (id: number) => void
   editMission: (id: number, name: string) => void
 }
 
-export const Mission: React.FC<IMisionProps> = ({ mission, deleteMission, editMission }) => {
-  const [checked, setChecked] = useState(false);
+export const Mission: React.FC<IMisionProps> = ({ mission, deleteMission, bla, editMission }) => {
+  const [checked, setChecked] = useState(mission.checked);
   const [editing, setEditing] = useState(false);
   const [newName, setNewName] = useState('');
-  const ref = useRef<HTMLInputElement>(document.createElement("input"));
+  const inputRef = useRef<HTMLInputElement>(document.createElement("input"));
+
+  console.log();
 
   const changeTask = (e: inputEvent) => {
     setNewName(e.target.value);
   };
 
   const saveTask = () => {
-    console.log("I SAVED THE NEW MISSION");
-    
-    // editMission(mission.id, newName);
+    editMission(mission.id, newName);
     setEditing(false);
   };
 
   const editTask = async () => {
-    setEditing(true);
+    if(!checked) {
+      setEditing(true);
+    }
   };
 
   const handleBlur = (e) => {
-    console.log("AAA", e.key)
     if(!e.currentTarget.contains(e.relatedTarget) && !newName) {
       setEditing(false);
     }
   };
 
   const pressEnter = (e: keyboardEvent) => {
-    console.log("AWWWWWW")
-
     if(e.key === 'Enter') {
       saveTask();
-    }
-
-    if(e.keyCode === 27) {
-      console.log("llego");
-      // setEditing(false);
     }
   }; 
 
@@ -60,7 +56,7 @@ export const Mission: React.FC<IMisionProps> = ({ mission, deleteMission, editMi
     };
 
     if(editing) {
-      ref.current.focus();
+      inputRef.current.focus();
     }
   }, [editing]);
 
@@ -68,11 +64,41 @@ export const Mission: React.FC<IMisionProps> = ({ mission, deleteMission, editMi
     deleteMission(mission.id);
   };
 
-  return (
-    <div className="flex justify-center mb-4">
-      <div className="flex w-8/12 justify-between h-12 align items-center shadow-md rounded-lg bg-gray-300 p-2">
+  const getItemStyle = (isDragging, draggableStyle) => ({
+    // some basic styles to make the items look a bit nicer
+    userSelect: "none",
+    padding: 8 * 2,
+    margin: `0 0 ${8}px 0`,
+  
+    // change background colour if dragging
+    background: isDragging ? "" : "",
+  
+    // styles we need to apply on draggables
+    ...draggableStyle
+  });
 
-        <div className="flex w-full"> 
+  const getItemClassname = (isDragging, draggableStyle) => {
+    return isDragging ? "flex w-8/12 justify-between align items-center transition duration-300 ease-in-out shadow-2xl rounded-lg bg-gray-300 p-2" : "flex w-8/12 justify-between align items-center  transition duration-300 ease-in-outshadow-md rounded-lg bg-gray-300 p-2";
+  };
+
+  return (
+    <Draggable key={mission.id} draggableId={`${mission.id}`} index={bla}>
+    {(provided, snapshot) => (
+      <div
+        ref={provided.innerRef}
+        {...provided.draggableProps}
+        style={getItemStyle(
+          snapshot.isDragging,
+          provided.draggableProps.style
+        )}
+      >
+    <div className="flex justify-center mb-4">
+      <div className={getItemClassname(
+          snapshot.isDragging,
+          provided.draggableProps.style
+        )}>
+
+        <div className="flex items-center w-full no-drag"> 
           <button 
             onClick={() => setChecked(!checked)}
             className={`flex p-1 rounded text-white relativecursor-pointer
@@ -84,10 +110,10 @@ export const Mission: React.FC<IMisionProps> = ({ mission, deleteMission, editMi
           {/* THE TASK */}
           {
             editing ? (
-              <div className="flex w-full items-center border-b border-b-2 border-indigo-800 ml-3 mr-16">
+              <div className="flex w-full items-center border-b-2 border-indigo-800 ml-3 mr-16">
                 <input 
-                  className="appearance-none bg-transparent border-none w-full text-lg text-gray-500 leading-tight focus:outline-none" 
-                  ref={ref}
+                  className="appearance-none tems-center bg-transparent border-none w-full text-lg text-gray-500 leading-tight focus:outline-none" 
+                  ref={inputRef}
                   type="text" 
                   onKeyDown={(e: keyboardEvent) => pressEnter(e)}
                   onBlur={(e) => handleBlur(e)}
@@ -98,7 +124,7 @@ export const Mission: React.FC<IMisionProps> = ({ mission, deleteMission, editMi
               </div>
             )
             : (
-              <span onClick={() => editTask()} className={`ml-3 text-lg text-gray-700 ${checked && 'line-through'}`}>{ mission.name }</span>
+              <span onClick={() => editTask()} className={`ml-3 mr-5 text-lg text-left text-gray-700 ${checked && 'line-through'}`}>{ mission.name }</span>
             )
           }
         </div>
@@ -106,25 +132,32 @@ export const Mission: React.FC<IMisionProps> = ({ mission, deleteMission, editMi
         {/* EDITING TASK */}
         {
           editing ? (
-            <div className="flex">
+            <div className="flex no-drag">
               <button className="bg-gray-100 p-1 rounded-lg mr-3" onClick={(e) => saveTask()}>
-                <FaCheck size="1.3em" className="relative cursor-pointer" />
+                <FaCheck size="1.2em" className="relative cursor-pointer" />
               </button>
               <button className="rounded-lg mr-3" onClick={() => setEditing(false)}>
-                <FaTimes size="1.4em" className="mr-1 relative cursor-pointer" />
+                <FaTimes size="1.3em" className="mr-1 relative cursor-pointer" />
               </button>
-              <GrDrag size="1.7em" className="origin-left relative opacity-50" />
+              <GrDrag size="1.5em" className="origin-left relative cursor-not-allowed opacity-50" />
             </div>
           )
           : (
             <div className="flex">
-              <AiFillEdit size="1.8em" className="mr-3 relative cursor-pointer" onClick={() => editTask()} />
-              <AiOutlineDelete size="1.7em" className="mr-3 relative cursor-pointer" onClick={() => deleteTask()} />
-              <GrDrag size="1.7em" className="origin-left relative cursor-pointer" />
+              {
+                !checked && <AiFillEdit size="1.5em" className="mr-3 relative cursor-pointer no-drag" onClick={() => editTask()} />
+              }
+              <AiOutlineDelete size="1.5em" className="mr-3 relative cursor-pointer no-drag" onClick={() => deleteTask()} />
+              <div { ... provided.dragHandleProps}> 
+                <GrDrag size="1.5em" className="origin-left relative cursor-pointer" />
+              </div>
             </div>
           )
         }
       </div>
     </div>
+    </div>
+              )}
+            </Draggable>
   ); 
 };
