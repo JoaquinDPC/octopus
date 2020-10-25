@@ -1,9 +1,6 @@
 import React, { useState } from 'react';
-import { keyboardEvent, inputEvent } from '../interfaces';
+import { keyboardEvent, inputEvent, IAddProps } from '../../interfaces/mainInterfaces';
 
-interface IAddProps {
-  addMission: (mission: string) => void
-};
 
 export const Add: React.FC<IAddProps> = ({ addMission }) => {
   const [mission, setMission] = useState<string>('');
@@ -13,7 +10,7 @@ export const Add: React.FC<IAddProps> = ({ addMission }) => {
     setMission(text);
   };
 
-  const pressEnter = (e: keyboardEvent) => {
+  const pressEnter = (e: keyboardEvent): void => {
     if(e.keyCode == 13) {
       saveMission();
     }
@@ -29,9 +26,8 @@ export const Add: React.FC<IAddProps> = ({ addMission }) => {
   return (
     <div className="mb-4">
       <input 
-        className="rounded-l shadow-lg pl-3 bg-gray-200 hover:bg-white hover:border-gray-300 focus:outline-none  
-        w-7/12 h-12
-        focus:bg-white focus:shadow-outline focus:border-gray-300" 
+        className="rounded-l shadow-lg pl-3 bg-gray-200 hover:bg-white hover:border-gray-300 
+        focus:outline-none w-7/12 h-12 focus:bg-white focus:shadow-outline focus:border-gray-300" 
         value={mission}
         placeholder="¿Cuál es la misión?"
         onChange={(e: inputEvent) => writeMission(e)}

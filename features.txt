@@ -1,0 +1,2 @@
+add missions automatically every day
+follow the mission completed

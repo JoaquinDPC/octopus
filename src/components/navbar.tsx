@@ -1,7 +1,7 @@
 import React from 'react';
 import Logo from '../img/Octopus-Logo.png';
 
-export const NavBar = () => (
+export const Navbar = () => (
   <header className="border-b md:flex md:items-center md:justify-between p-4 pb-0 shadow-lg md:pb-4">  
     
     {/* Logo text or image  */}
@@ -19,7 +19,6 @@ export const NavBar = () => (
     </div>
 
     
-  
     {/* Global navigation */}
     <nav className="hidden md:block">
       <ul className="list-reset md:flex md:items-center">

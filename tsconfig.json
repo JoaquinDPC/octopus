@@ -18,10 +18,12 @@
     "resolveJsonModule": true,
     "noEmit": true,
     "jsx": "react",
-    "isolatedModules": true
+    "isolatedModules": true,
+    "strictNullChecks": false, // CHECK
+    "experimentalDecorators": true, // CHECK
   },
   "include": [
-    "src/*"
+    "src/*", "src/Home/Home.tsx"
   ],
   "exclude": [
     "node_modules",

@@ -2,57 +2,58 @@ import React, { useState, useRef, useEffect } from 'react';
 import { FaCheck, FaTimes } from 'react-icons/fa';
 import { AiFillEdit, AiOutlineDelete } from "react-icons/ai";
 import { GrDrag } from "react-icons/gr";
-import { keyboardEvent, inputEvent, IMision } from '../interfaces';
 import { Draggable } from "react-beautiful-dnd";
 
-// components
-import { Checkbox } from '../components/checkbox';
+// Interfaces
+import { keyboardEvent, inputEvent, IMision } from '../../interfaces/mainInterfaces';
 
-interface IMisionProps {
-  bla: number
+// components
+import { Checkbox } from '../../components/Checkbox';
+
+export interface IMisionProps {
+  index: number
   mission: IMision
   deleteMission: (id: number) => void
   editMission: (id: number, name: string) => void
-}
+};
 
-export const Mission: React.FC<IMisionProps> = ({ mission, deleteMission, bla, editMission }) => {
+export const Mission: React.FC<IMisionProps> = ({ mission, deleteMission, index, editMission }) => {
   const [checked, setChecked] = useState(mission.checked);
   const [editing, setEditing] = useState(false);
   const [newName, setNewName] = useState('');
   const inputRef = useRef<HTMLInputElement>(document.createElement("input"));
+  const documentDivRef = useRef<HTMLDivElement>(document.createElement("div"));
 
-  console.log();
-
-  const changeTask = (e: inputEvent) => {
+  const changeTask = (e: inputEvent): void => {
     setNewName(e.target.value);
   };
 
-  const saveTask = () => {
-    editMission(mission.id, newName);
+  const saveTask = (): void => {
+    // editMission(mission._id, newName);
     setEditing(false);
   };
 
-  const editTask = async () => {
+  const editTask = async (): Promise<void> => {
     if(!checked) {
       setEditing(true);
     }
   };
 
-  const handleBlur = (e) => {
+  const handleBlur = (e): void => {
     if(!e.currentTarget.contains(e.relatedTarget) && !newName) {
       setEditing(false);
     }
   };
 
-  const pressEnter = (e: keyboardEvent) => {
+  const pressEnter = (e: keyboardEvent): void => {
     if(e.key === 'Enter') {
       saveTask();
     }
   }; 
 
-  useEffect(() => {
+  useEffect((): void => {
     document.onkeydown = (evt) => {
-      evt = evt || window.event;
+      const myEvent = evt || window.event;
       if(evt.key === 'Escape') {
         setEditing(false);
       }
@@ -63,8 +64,8 @@ export const Mission: React.FC<IMisionProps> = ({ mission, deleteMission, bla, e
     }
   }, [editing]);
 
-  const deleteTask = () => {
-    deleteMission(mission.id);
+  const deleteTask = (): void => {
+    // deleteMission(mission.id);
   };
 
   const getItemClassname = (isDragging, draggableStyle) => {
@@ -75,8 +76,10 @@ export const Mission: React.FC<IMisionProps> = ({ mission, deleteMission, bla, e
       : "flex w-8/12 justify-between align items-center shadow-md rounded-lg bg-gray-300 p-2";
   };
 
+  const draggableId = mission._id;
+
   return (
-    <Draggable key={mission.id} draggableId={`${mission.id}`} index={bla}>
+    <Draggable draggableId={draggableId} index={index}>
       {(provided, snapshot) => (
           <div className="flex justify-center mb-1 p-1" ref={provided.innerRef} {...provided.draggableProps}>
             <div className={getItemClassname(
@@ -84,28 +87,27 @@ export const Mission: React.FC<IMisionProps> = ({ mission, deleteMission, bla, e
               provided.draggableProps.style
             )}>
 
-              <div className="flex items-center w-full no-drag"> 
+              <div className="flex items-center w-full"> 
                 <Checkbox checked={checked} updateCheck={setChecked} />
 
                 {/* THE MISSION */}
                 {
                   editing ? (
-                    <div className="flex w-full items-center border-b-2 border-indigo-800 ml-3 mr-16">
+                    <div className="flex w-full h-full items-center border-b-2 border-indigo-800 ml-3 mr-16">
                       <input 
                         className="appearance-none tems-center bg-transparent mr-5 
-                        border-none w-full text-lg text-gray-500 leading-tight focus:outline-none" 
+                        border-none w-full h-full pt-1 text-lg leading-tight focus:outline-none" 
                         ref={inputRef}
                         type="text" 
                         onKeyDown={(e: keyboardEvent) => pressEnter(e)}
                         onBlur={(e) => handleBlur(e)}
                         onChange={(e: inputEvent) => changeTask(e)}
-                        placeholder={mission.name}
-                        aria-label="Full name" 
+                        placeholder={mission.missionName}
                       />
                     </div>
                   )
                   : (
-                    <span onClick={() => editTask()} className={`ml-3 mr-5 text-lg text-left text-gray-700 ${checked && 'line-through'}`}>{ mission.name }</span>
+                    <span onClick={() => editTask()} className={`ml-3 mr-5 text-lg text-left text-gray-700 ${checked && 'line-through'}`}>{ mission.missionName }</span>
                   )
                 }
               </div>
@@ -113,24 +115,20 @@ export const Mission: React.FC<IMisionProps> = ({ mission, deleteMission, bla, e
               {/* EDITING MISSION */}
               {
                 editing ? (
-                  <div className="flex no-drag">
-                    <button className="bg-gray-100 p-1 rounded-lg mr-3" onClick={(e) => saveTask()}>
-                      <FaCheck size="1.2em" className="relative cursor-pointer" />
-                    </button>
-                    <button className="rounded-lg mr-3" onClick={() => setEditing(false)}>
-                      <FaTimes size="1.3em" className="mr-1 relative cursor-pointer" />
-                    </button>
+                  <div className="flex">
+                    <FaCheck size="1.4em" className="bg-gray-100 mr-3 relative cursor-pointer hover:bg-indigo-300 rounded-md" onClick={(e) => saveTask()} />
+                    <FaTimes size="1.4em" className="mr-3 relative cursor-pointer hover:bg-indigo-300 rounded-md" onClick={() => setEditing(false)} />
                     <div { ... provided.dragHandleProps}> 
-                      <GrDrag size="1.5em" className="origin-left relative" />
+                      <GrDrag size="1.5em" className="origin-left relative cursor-pointer" />
                     </div>
                   </div>
                 )
                 : (
                   <div className="flex">
                     {
-                      !checked && <AiFillEdit size="1.5em" className="mr-3 relative cursor-pointer no-drag" onClick={() => editTask()} />
+                      !checked && <AiFillEdit size="1.5em" className="mr-3 relative cursor-pointer hover:bg-indigo-300 rounded-lg" onClick={() => editTask()} />
                     }
-                    <AiOutlineDelete size="1.5em" className="mr-3 relative cursor-pointer no-drag" onClick={() => deleteTask()} />
+                    <AiOutlineDelete size="1.5em" className="mr-3 relative cursor-pointer hover:bg-indigo-300 rounded-lg" onClick={() => deleteTask()} />
                     <div { ... provided.dragHandleProps}> 
                       <GrDrag size="1.5em" className="origin-left relative cursor-pointer" />
                     </div>
@@ -138,8 +136,23 @@ export const Mission: React.FC<IMisionProps> = ({ mission, deleteMission, bla, e
                 )
               }
             </div>
+            
+            {/* ACORDEON */}
+            {/* <div 
+              ref={documentDivRef}
+              className="duration-700 ease-in-out flex flex-col bg-white transition-height h-0
+              rounded-lg rounded-t-none relative overflow-hidden focus:overflow-scroll"
+              style={{bottom: '1px'}}>
+
+              <h1>BLUCKACK</h1>
+
+            </div> */}
+
           </div>
         )}
     </Draggable>
   ); 
+
+
+
 };

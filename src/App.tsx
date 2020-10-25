@@ -1,12 +1,13 @@
 import React from 'react';
 import './App.css';
-import { Home } from './home';
-import { NavBar } from './components/navbar';
+import { Home } from './Home/Home';
+import { Navbar } from './components/Navbar';
+
 
 function App() {
   return (
     <div className="App">
-      <NavBar />
+      <Navbar />
       <div className="flex flex-col mt-6">
         <Home />
       </div>
