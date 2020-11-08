@@ -10,7 +10,7 @@ import { IMision } from '../interfaces/mainInterfaces';
 
 // Utils
 import { mock } from './mockData';
-import NetworkManager from '../networkHandler/NetworkManager';
+import NetworkManager from '../data/NetworkManager';
 
 export const Home: React.FC = () => {
   const [missions, setMissions] = useState<IMision[]>(mock);

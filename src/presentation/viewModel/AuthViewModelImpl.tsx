@@ -1,8 +1,7 @@
-import AuthViewModel from './AuthViewModel';
-import BaseView from '../../view/BaseView';
-import LoginUseCase from '../../../domain/interactors/auth/LoginUseCase';
-import AuthHolder from '../../../domain/entity/auth/models/AuthHolder';
-import AuthListener from '../../../domain/entity/auth/models/AuthListener';
+import { BaseView, AuthViewModel } from '../ViewInterfaces';
+import LoginUseCase from '../../domain/interactors/LoginUseCase';
+import AuthHolder from '../../domain/entity/AuthHolder';
+import AuthListener from '../../domain/entity/auth/models/AuthListener';
 import FormValidator from '../../util/FormValidator';
 
 export default class AuthViewModelImpl implements AuthViewModel, AuthListener {
@@ -10,10 +9,8 @@ export default class AuthViewModelImpl implements AuthViewModel, AuthListener {
   public passwordQuery: string;
   public isSignInButtonVisible: boolean;
   public isSignOutButtonVisible: boolean;
-
   public isShowError: boolean;
   public errorMessage: string;
-
   public authStatus: string;
   public isAuthStatusPositive: boolean;
 

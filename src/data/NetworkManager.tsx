@@ -1,8 +1,10 @@
+const axios = require('axios').default;
+
+
 // Interfaces 
 import { IResponse, IMision } from '../interfaces/mainInterfaces';
 
-
-const axios = require('axios').default;
+// Tools
 const apiURL: string = process.env.API_URL || 'http://localhost:9001';
 
 
@@ -16,8 +18,12 @@ export default class NetworkManager {
     }
   };
 
-  static async login(email: string, password: string): Promise<any> {
+  async validateCredentials(email: string, password: string): Promise<any> {
+    // todo...
+  };
 
+  async login(email: string, password: string): Promise<any> {
+    // todo...
   };
 
   static async getMissions(): Promise<IResponse<IMision[]>> {

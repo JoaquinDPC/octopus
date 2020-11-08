@@ -1,27 +1,11 @@
 import React from 'react';
-// import './auth-component.css';
-import BaseView from '../BaseView';
-import AuthViewModel from '../../viewModel/auth/AuthViewModel';
+import { AuthViewModel } from '../../ViewInterfaces';
+import { BaseView } from '../../ViewInterfaces';
 
-export interface AuthComponentProps {
-  authViewModel: AuthViewModel;
-}
+// Interfaces
+import { AuthComponentProps, AuthComponentState } from '../../ViewInterfaces';
 
-export interface AuthComponentState {
-  emailQuery: string;
-  passwordQuery: string;
-  isSignInButtonVisible: boolean;
-  isSignOutButtonVisible: boolean;
-
-  isShowError: boolean;
-  errorMessage: string;
-
-  authStatus: string;
-  isAuthStatusPositive: boolean;
-}
-
-export default class AuthComponent extends React.Component<AuthComponentProps, AuthComponentState>
-  implements BaseView {
+export default class AuthComponent extends React.Component<AuthComponentProps, AuthComponentState> implements BaseView {
   private authViewModel: AuthViewModel;
 
   public constructor(props: AuthComponentProps) {
@@ -35,10 +19,8 @@ export default class AuthComponent extends React.Component<AuthComponentProps, A
       passwordQuery: authViewModel.passwordQuery,
       isSignInButtonVisible: authViewModel.isSignInButtonVisible,
       isSignOutButtonVisible: authViewModel.isSignOutButtonVisible,
-
       isShowError: authViewModel.isShowError,
       errorMessage: authViewModel.errorMessage,
-
       authStatus: authViewModel.authStatus,
       isAuthStatusPositive: authViewModel.isAuthStatusPositive,
     };
@@ -60,10 +42,8 @@ export default class AuthComponent extends React.Component<AuthComponentProps, A
       passwordQuery: this.authViewModel.passwordQuery,
       isSignInButtonVisible: this.authViewModel.isSignInButtonVisible,
       isSignOutButtonVisible: this.authViewModel.isSignOutButtonVisible,
-
       isShowError: this.authViewModel.isShowError,
       errorMessage: this.authViewModel.errorMessage,
-
       authStatus: this.authViewModel.authStatus,
       isAuthStatusPositive: this.authViewModel.isAuthStatusPositive,
     });
@@ -75,10 +55,8 @@ export default class AuthComponent extends React.Component<AuthComponentProps, A
       passwordQuery,
       isSignInButtonVisible,
       isSignOutButtonVisible,
-
       isShowError,
       errorMessage,
-
       authStatus,
       isAuthStatusPositive,
     } = this.state;

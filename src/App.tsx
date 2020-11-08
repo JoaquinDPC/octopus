@@ -4,10 +4,10 @@ import { Home } from './Home/Home';
 import { Navbar } from './components/Navbar';
 
 import AuthComponent from './presentation/view/auth/AuthComponent';
-import AuthViewModelImpl from './presentation/viewModel/auth/AuthViewModelImpl';
+import AuthViewModelImpl from './presentation/viewModel/AuthViewModelImpl';
 import AuthFakeApi from './data/auth/AuthFakeApi';
 import LoginUseCase from './domain/interactors/auth/LoginUseCase';
-import AuthHolder from './domain/entity/auth/models/AuthHolder';
+import AuthHolder from './domain/entity/AuthHolder';
 
 
 function App() {

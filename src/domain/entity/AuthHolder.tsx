@@ -1,4 +1,4 @@
-import AuthListener from './AuthListener';
+import { AuthListener } from '../DomainInterfaces';
 
 // This class holds autorization state (see point 3.1.5).
 // In order to update presentation layer, we use an "Observer"
