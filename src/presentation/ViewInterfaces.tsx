@@ -36,3 +36,14 @@ export interface AuthViewModel extends BaseViewModel {
   onClickSignIn(): void;
   onClickSignOut(): void;
 };
+
+// HERE: 
+export interface IMissionsVM extends BaseViewModel {
+  name: string;
+  age: number;
+};
+
+export interface HomeMissionsProps {
+  viewModel: IMissionsVM;
+};
+// HERE: 

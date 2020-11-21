@@ -1,9 +1,8 @@
 import React from 'react';
-import { AuthViewModel } from '../../ViewInterfaces';
 import { BaseView } from '../../ViewInterfaces';
 
 // Interfaces
-import { AuthComponentProps, AuthComponentState } from '../../ViewInterfaces';
+import { AuthComponentProps, AuthComponentState, AuthViewModel } from '../../ViewInterfaces';
 
 export default class AuthComponent extends React.Component<AuthComponentProps, AuthComponentState> implements BaseView {
   private authViewModel: AuthViewModel;

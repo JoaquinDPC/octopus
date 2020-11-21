@@ -22,7 +22,7 @@ export const Home: React.FC = () => {
   // Estas vistas no deben tener funciones, solo invocaciones y pasar parámetros
 
   // Fines cientificos
-  useEffect(() => {
+  useEffect(() => {   
     const getHealth = async () => {
       const missionsResponse = await NetworkManager.getMissions();
       

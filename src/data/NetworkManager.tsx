@@ -1,8 +1,7 @@
-const axios = require('axios').default;
-
-
 // Interfaces 
 import { IResponse, IMision } from '../interfaces/mainInterfaces';
+
+const axios = require('axios').default;
 
 // Tools
 const apiURL: string = process.env.API_URL || 'http://localhost:9001';

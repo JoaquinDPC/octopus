@@ -1,7 +1,7 @@
 import { BaseView, AuthViewModel } from '../ViewInterfaces';
 import LoginUseCase from '../../domain/interactors/LoginUseCase';
 import AuthHolder from '../../domain/entity/AuthHolder';
-import AuthListener from '../../domain/entity/auth/models/AuthListener';
+import { AuthListener } from '../../domain/DomainInterfaces';
 import FormValidator from '../../util/FormValidator';
 
 export default class AuthViewModelImpl implements AuthViewModel, AuthListener {
